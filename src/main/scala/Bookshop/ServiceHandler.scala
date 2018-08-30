@@ -1,0 +1,5 @@
+package Bookshop
+
+class ServiceHandler {
+
+}
