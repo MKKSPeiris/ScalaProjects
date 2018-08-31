@@ -3,11 +3,7 @@ package Bookshop
 import java.io.IOException
 import java.net.InetSocketAddress
 
-import com.sun.net.httpserver.HttpExchange
-import com.sun.net.httpserver.HttpHandler
 import com.sun.net.httpserver.HttpServer
-import java.util
-import java.util.EmptyStackException
 
 case class BookDetailsClass(Writer:String,Price:Double)
 
@@ -30,7 +26,6 @@ object StoreServices {
     server.createContext("/remove",new Handler.RemoveHandler)
     server.setExecutor(null) // creates a default executor
     server.start()
-
 
     }
 
