@@ -5,8 +5,7 @@ import java.util.EmptyStackException
 class Controllers(var BookList:Map[String,BookDetailsClass]) {
 
   def AddBook(BookName:String,Writer:String,BookPrice:Double): Unit ={
-    val BookDetailTemp = new BookDetailsClass(Writer,BookPrice)
-    BookList += (BookName->BookDetailTemp)
+    BookList += (BookName->new BookDetailsClass(Writer,BookPrice))
   }
 
   def RemoveBook(BookName:String): Unit ={

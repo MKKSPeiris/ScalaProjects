@@ -1,8 +1,6 @@
 package Bookshop
 
-import java.io.IOException
 import java.net.InetSocketAddress
-
 import com.sun.net.httpserver.HttpServer
 
 case class BookDetailsClass(Writer:String,Price:Double)
@@ -24,34 +22,8 @@ object StoreServices {
     server.createContext("/addbook" ,new Handler.AddHandler)
     server.createContext("/details",new Handler.GetHandler)
     server.createContext("/remove",new Handler.RemoveHandler)
-    server.setExecutor(null) // creates a default executor
+    server.setExecutor(null)
     server.start()
 
     }
-
-  /*def AddBook(BookName:String,Writer:String,BookPrice:Double): Unit ={
-    val BookDetailTemp = new BookDetailsClass(Writer,BookPrice)
-    BookList += (BookName->BookDetailTemp)
-  }
-
-  def RemoveBook(BookName:String): Unit ={
-      if (BookList(BookName) != null) {BookList -= BookName}
-      else throw new EmptyStackException
-  }
-
-  def GetBookDetail(BookName:String): List[Any]={
-    val book = BookList(BookName)
-    val list = List(BookName,book.Writer,book.Price)
-    list
-  }
-
-  def GetAllBooks(): String ={
-    var booklist :String = ""
-    BookList.keys.foreach{key =>
-      booklist= key + "<br/>" +booklist
-    }
-    booklist
-  }
-*/
-
 }
