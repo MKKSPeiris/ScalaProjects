@@ -8,9 +8,29 @@ class ServiceHandler(var BookList:Map[String,BookDetailsClass]) {
 
   var Controllers =new Controllers(BookList)
 
+  //
+  @throws[IOException]
+  def writeResponse(t: HttpExchange, response: String): Unit = {
+    t.sendResponseHeaders(200, response.length)
+    val os = t.getResponseBody
+    os.write(response.getBytes)
+    os.close()
+  }
+
+  //Get QueryString values
+  def queryToMap(query: String): util.HashMap[String, String] = {
+    val result = new util.HashMap[String,String]()
+    for (param <- query.split("&")) {
+      val pair = param.split("=")
+      if (pair.length > 1) result.put(pair(0), pair(1))
+      else result.put(pair(0),"")
+    }
+    result}
+
+  //GetAllBooks
   class GetAllBooksHandler extends HttpHandler {
     @throws[IOException]
-    override def handle(t: HttpExchange): Unit = {
+    def handle(t: HttpExchange): Unit = {
       val response = new StringBuilder
       response.append("<html><body>")
       response.append(Controllers.GetAllBooks())
@@ -19,9 +39,10 @@ class ServiceHandler(var BookList:Map[String,BookDetailsClass]) {
     }
   }
 
+  //RemoveBook
   class RemoveHandler extends HttpHandler {
     @throws[IOException]
-    override def handle(t: HttpExchange):Unit = {
+    def handle(t: HttpExchange):Unit = {
       val response = new StringBuilder
       val parms = queryToMap(t.getRequestURI.getQuery)
       try {
@@ -38,9 +59,10 @@ class ServiceHandler(var BookList:Map[String,BookDetailsClass]) {
     }
   }
 
+  //GetDetails
   class GetHandler extends HttpHandler {
     @throws[IOException]
-    override def handle(t: HttpExchange):Unit = {
+    def handle(t: HttpExchange):Unit = {
       val response = new StringBuilder
       val parms = queryToMap(t.getRequestURI.getQuery)
       try {
@@ -59,9 +81,10 @@ class ServiceHandler(var BookList:Map[String,BookDetailsClass]) {
     }
   }
 
+  //AddBook
   class AddHandler extends HttpHandler {
     @throws[IOException]
-    override def handle(t: HttpExchange):Unit = {
+    def handle(t: HttpExchange):Unit = {
       val response = new StringBuilder
       val parms = queryToMap(t.getRequestURI.getQuery)
       try {
@@ -80,20 +103,5 @@ class ServiceHandler(var BookList:Map[String,BookDetailsClass]) {
     }
   }
 
-  @throws[IOException]
-  def writeResponse(t: HttpExchange, response: String): Unit = {
-    t.sendResponseHeaders(200, response.length)
-    val os = t.getResponseBody
-    os.write(response.getBytes)
-    os.close()
-  }
 
-  def queryToMap(query: String): util.HashMap[String, String] = {
-    val result = new util.HashMap[String,String]()
-    for (param <- query.split("&")) {
-      val pair = param.split("=")
-      if (pair.length > 1) result.put(pair(0), pair(1))
-      else result.put(pair(0),"")
-    }
-    result}
 }
