@@ -20,7 +20,7 @@ object StoreServices {
 
     val server = HttpServer.create(new InetSocketAddress(8001), 0)
     val Handler = new ServiceHandler(BookList);
-    server.createContext("/allbooks", new Handler.GetAllBooksHandler
+    server.createContext("/allbooks", new Handler.GetAllBooksHandler)
     server.createContext("/addbook" ,new Handler.AddHandler)
     server.createContext("/details",new Handler.GetHandler)
     server.createContext("/remove",new Handler.RemoveHandler)
