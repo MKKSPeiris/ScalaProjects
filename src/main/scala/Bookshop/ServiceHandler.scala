@@ -8,7 +8,6 @@ class ServiceHandler(var BookList:Map[String,BookDetailsClass]) {
 
   var Controllers =new Controllers(BookList)
 
-  //
   @throws[IOException]
   def writeResponse(t: HttpExchange, response: String): Unit = {
     t.sendResponseHeaders(200, response.length)
