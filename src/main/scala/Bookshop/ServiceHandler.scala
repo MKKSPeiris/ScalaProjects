@@ -7,6 +7,7 @@ import com.sun.net.httpserver.{HttpExchange, HttpHandler}
 class ServiceHandler(var BookList:Map[String,BookDetailsClass]) {
 
   var Controllers =new Controllers(BookList)
+
   class GetAllBooksHandler extends HttpHandler {
     @throws[IOException]
     override def handle(t: HttpExchange): Unit = {
