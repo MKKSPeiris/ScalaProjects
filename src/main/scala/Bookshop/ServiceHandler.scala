@@ -2,16 +2,17 @@ package Bookshop
 
 import java.io.IOException
 import java.util
-import Bookshop.StoreServices._
 import com.sun.net.httpserver.{HttpExchange, HttpHandler}
 
-class ServiceHandler {
+class ServiceHandler(var BookList:Map[String,BookDetailsClass]) {
+
+  var Controllers =new Controllers(BookList)
   class GetAllBooksHandler extends HttpHandler {
     @throws[IOException]
     override def handle(t: HttpExchange): Unit = {
       val response = new StringBuilder
       response.append("<html><body>")
-      response.append(GetAllBooks())
+      response.append(Controllers.GetAllBooks())
       response.append("</body></html>")
       writeResponse(t, response.toString)
     }
@@ -23,7 +24,7 @@ class ServiceHandler {
       val response = new StringBuilder
       val parms = queryToMap(t.getRequestURI.getQuery)
       try {
-        RemoveBook(parms.get("bookname"))
+        Controllers.RemoveBook(parms.get("bookname"))
         response.append("<html><body>")
         response.append("<font color=\"Green\">Successfully removed </font>".format() + parms.get("bookname"))
         response.append("</body></html>")
@@ -42,7 +43,7 @@ class ServiceHandler {
       val response = new StringBuilder
       val parms = queryToMap(t.getRequestURI.getQuery)
       try {
-        val list:List[Any] = GetBookDetail(parms.get("bookname"))
+        val list:List[Any] = Controllers.GetBookDetail(parms.get("bookname"))
         response.append("<html><body>")
         response.append("Bookname : " + list.head + "<br/>")
         response.append("Writer : " + list(1)+ "<br/>")
@@ -63,7 +64,7 @@ class ServiceHandler {
       val response = new StringBuilder
       val parms = queryToMap(t.getRequestURI.getQuery)
       try {
-        AddBook(parms.get("bookname"), parms.get("writer"), parms.get("price").toDouble)
+        Controllers.AddBook(parms.get("bookname"), parms.get("writer"), parms.get("price").toDouble)
         response.append("<html><body>")
         response.append("Bookname : " + parms.get("bookname") + "<br/>")
         response.append("Writer : " + parms.get("writer") + "<br/>")

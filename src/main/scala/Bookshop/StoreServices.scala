@@ -15,23 +15,26 @@ object StoreServices {
   var BookList:Map[String,BookDetailsClass] =Map[String,BookDetailsClass]()
 
   def main(args: Array[String]): Unit = {
-    val server = HttpServer.create(new InetSocketAddress(8001), 0)
-    val Handler = new ServiceHandler;
-    server.createContext("/allbooks", new Handler.GetAllBooksHandler)
-    server.createContext("/addbook" ,new Handler.AddHandler)
-    server.createContext("/details",new Handler.GetHandler)
-    server.createContext("/remove",new Handler.RemoveHandler)
-    server.setExecutor(null) // creates a default executor
-    server.start()
 
     BookList = Map("Harry Potter"->new BookDetailsClass("Rowling",10),
       "War And Peace"->new BookDetailsClass("Leo Tolstoy",100),
       "Hamlet"->new BookDetailsClass("Shakespeare",150),
       "Lliad"->new BookDetailsClass("Homer",95.5),
       "Thor"->new BookDetailsClass("Wayne Smith",20))
+
+    val server = HttpServer.create(new InetSocketAddress(8001), 0)
+    val Handler = new ServiceHandler(BookList);
+    server.createContext("/allbooks", new Handler.GetAllBooksHandler
+    server.createContext("/addbook" ,new Handler.AddHandler)
+    server.createContext("/details",new Handler.GetHandler)
+    server.createContext("/remove",new Handler.RemoveHandler)
+    server.setExecutor(null) // creates a default executor
+    server.start()
+
+
     }
 
-  def AddBook(BookName:String,Writer:String,BookPrice:Double): Unit ={
+  /*def AddBook(BookName:String,Writer:String,BookPrice:Double): Unit ={
     val BookDetailTemp = new BookDetailsClass(Writer,BookPrice)
     BookList += (BookName->BookDetailTemp)
   }
@@ -54,6 +57,6 @@ object StoreServices {
     }
     booklist
   }
-
+*/
 
 }
