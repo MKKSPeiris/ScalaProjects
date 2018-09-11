@@ -4,7 +4,7 @@ import org.scalatest.FunSuite
 class TestDemo extends FunSuite {
 
   test(testName = "Get book Details") {
-    val BookList = Map("Harry Potter" -> BookDetailsClass("Rowling", 10))
+    val BookList = scala.collection.mutable.Map("Harry Potter" -> BookDetailsClass("Rowling", 10))
     val Controler = new Bookshop.Controllers(BookList)
     val list = Controler.GetBookDetail("Harry Potter")
     assert(list.head !== null)
@@ -13,7 +13,7 @@ class TestDemo extends FunSuite {
   }
 
   test(testName = "Get All Book Names") {
-    val BookList = Map("Harry Potter" -> new BookDetailsClass("Rowling", 10),
+    val BookList = scala.collection.mutable.Map("Harry Potter" -> new BookDetailsClass("Rowling", 10),
       "War And Peace" -> new BookDetailsClass("Leo Tolstoy", 100))
     val Controler = new Bookshop.Controllers(BookList)
     val BookNameList: Set[String] = Controler.GetAllBooks()
@@ -21,14 +21,14 @@ class TestDemo extends FunSuite {
     BookNameList.foreach(i => assert(i !== null))
   }
   test(testName = "Add a Book") {
-    val BookList: Map[String, BookDetailsClass] = Map[String, BookDetailsClass]()
+    val BookList: scala.collection.mutable.Map[String, BookDetailsClass] =scala.collection.mutable.Map[String, BookDetailsClass]()
     val Controler = new Bookshop.Controllers(BookList)
     val ReturnBookList = Controler.AddBook("Thor", "Rowling", 10)
     assert(ReturnBookList.contains("Thor"))
 
   }
   test(testName = "Remove Book") {
-    val BookList = Map("Harry Potter" -> new BookDetailsClass("Rowling", 10))
+    val BookList = scala.collection.mutable.Map("Harry Potter" -> new BookDetailsClass("Rowling", 10))
     val Controler = new Bookshop.Controllers(BookList)
     val ReturnBookList = Controler.RemoveBook("Harry Potter")
     assert(!ReturnBookList.contains("Harry Potter"))

@@ -2,14 +2,16 @@ package Bookshop
 
 import java.util.EmptyStackException
 
-class Controllers(var BookList: Map[String, BookDetailsClass]) {
+import scala.collection.mutable
 
-  def AddBook(BookName: String, Writer: String, BookPrice: Double): Map[String, BookDetailsClass] = {
+class Controllers( BookList: scala.collection.mutable.Map[String, BookDetailsClass]) {
+
+  def AddBook(BookName: String, Writer: String, BookPrice: Double): mutable.Map[String, BookDetailsClass] = {
     BookList += (BookName -> new BookDetailsClass(Writer, BookPrice))
     BookList
   }
 
-  def RemoveBook(BookName: String): Map[String, BookDetailsClass] = {
+  def RemoveBook(BookName: String): mutable.Map[String, BookDetailsClass] = {
     if (BookList(BookName) != null) {
       BookList -= BookName
       BookList

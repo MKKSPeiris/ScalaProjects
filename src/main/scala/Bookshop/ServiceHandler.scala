@@ -4,7 +4,7 @@ import java.io.IOException
 import java.util
 import com.sun.net.httpserver.{HttpExchange, HttpHandler}
 
-class ServiceHandler(var BookList: Map[String, BookDetailsClass]) {
+class ServiceHandler( BookList: scala.collection.mutable.Map[String, BookDetailsClass]) {
 
   var Controllers = new Controllers(BookList)
 
