@@ -17,7 +17,7 @@ object StoreServices {
       "Thor" -> new BookDetailsClass("Wayne Smith", 20))
 
 
-    var RsvMsgHandler = new ReceiveHandler(BookList);
+    var RcvMsgHandler = new ReceiveHandler(BookList);
 
     val server = HttpServer.create(new InetSocketAddress(8001), 0)
     val Handler = new ServiceHandler(BookList);

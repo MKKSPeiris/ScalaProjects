@@ -21,8 +21,13 @@ class SendHandler(BookList: scala.collection.mutable.Map[String, BookDetailsClas
   }
 
   def BookDetails(BookName: String): Unit = {
-    var BookDetails: List[Any] = Controllers.GetBookDetail(BookName);
-    message = f"BookName: ${BookDetails.head} | Author: ${BookDetails(1)} | Price: ${BookDetails(2)}"
+    try {
+      var BookDetails: List[Any] = Controllers.GetBookDetail(BookName);
+      message = f"BookName: ${BookDetails.head} | Author: ${BookDetails(1)} | Price: ${BookDetails(2)}"
+    }
+    catch {
+      case _: Exception => message = "Cant find the book"
+    }
     MessageSender()
   }
 
@@ -38,15 +43,20 @@ class SendHandler(BookList: scala.collection.mutable.Map[String, BookDetailsClas
   }
 
   def BookRemove(BookName: String): Unit = {
-    Controllers.RemoveBook(BookName);
-    message = "Successfully Removed"
+    try {
+      Controllers.RemoveBook(BookName);
+      message = "Successfully Removed"
+    }
+    catch {
+      case _: Exception => message = "Cant Remove the book"
+    }
     MessageSender()
   }
 
   def MessageSender(): Unit = {
     channel.basicPublish("", QUEUE_NAME, null, message.getBytes("UTF-8"))
     println(" [x] Sent '" + message + "'")
-    channel.close()
-    connection.close()
+    //channel.close()
+    //connection.close()
   }
 }
