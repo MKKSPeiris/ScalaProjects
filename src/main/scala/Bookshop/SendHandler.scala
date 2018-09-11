@@ -2,7 +2,7 @@ package Bookshop
 
 import com.rabbitmq.client.ConnectionFactory
 
-class SenderHandler(BookList: scala.collection.mutable.Map[String, BookDetailsClass]) {
+class SendHandler(BookList: scala.collection.mutable.Map[String, BookDetailsClass]) {
 
   var Controllers = new Controllers(BookList)
 

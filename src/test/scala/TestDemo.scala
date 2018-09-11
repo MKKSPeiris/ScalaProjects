@@ -21,7 +21,7 @@ class TestDemo extends FunSuite {
     BookNameList.foreach(i => assert(i !== null))
   }
   test(testName = "Add a Book") {
-    val BookList: scala.collection.mutable.Map[String, BookDetailsClass] =scala.collection.mutable.Map[String, BookDetailsClass]()
+    val BookList: scala.collection.mutable.Map[String, BookDetailsClass] = scala.collection.mutable.Map[String, BookDetailsClass]()
     val Controler = new Bookshop.Controllers(BookList)
     val ReturnBookList = Controler.AddBook("Thor", "Rowling", 10)
     assert(ReturnBookList.contains("Thor"))

@@ -17,24 +17,24 @@ class ReceiveHandler(BookList: scala.collection.mutable.Map[String, BookDetailsC
                                 properties: AMQP.BasicProperties,
                                 body: Array[Byte]) {
       var message = new String(body, "UTF-8")
-      val Sender =new SenderHandler(BookList);
-      if(message == "AllBooks"){
+      val Sender = new SendHandler(BookList);
+      if (message == "AllBooks") {
         println(" [x] Received '" + message + "'")
         Sender.Allbooks()
       }
-      else if(message.contains("BookDetail")){
+      else if (message.contains("BookDetail")) {
         println(" [x] Received '" + message + "'")
-        var DetailList :List[String] = message.split("\\+").toList
+        var DetailList: List[String] = message.split("\\+").toList
         Sender.BookDetails(DetailList(1))
       }
-      else if(message.contains("BookAdd")){
+      else if (message.contains("BookAdd")) {
         println(" [x] Received '" + message + "'")
-        var DetailList :List[String] = message.split("\\+").toList
-        Sender.BookAdd(DetailList(1),DetailList(2),DetailList(3))
+        var DetailList: List[String] = message.split("\\+").toList
+        Sender.BookAdd(DetailList(1), DetailList(2), DetailList(3))
       }
-      else if(message.contains("BookRemove")){
+      else if (message.contains("BookRemove")) {
         println(" [x] Received '" + message + "'")
-        var DetailList :List[String] = message.split("\\+").toList
+        var DetailList: List[String] = message.split("\\+").toList
         Sender.BookRemove(DetailList(1))
       }
     }

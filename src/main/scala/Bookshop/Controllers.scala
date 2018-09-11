@@ -4,7 +4,7 @@ import java.util.EmptyStackException
 
 import scala.collection.mutable
 
-class Controllers( BookList: scala.collection.mutable.Map[String, BookDetailsClass]) {
+class Controllers(BookList: scala.collection.mutable.Map[String, BookDetailsClass]) {
 
   def AddBook(BookName: String, Writer: String, BookPrice: Double): mutable.Map[String, BookDetailsClass] = {
     BookList += (BookName -> new BookDetailsClass(Writer, BookPrice))
