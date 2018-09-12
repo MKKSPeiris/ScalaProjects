@@ -1,62 +1,43 @@
 package Bookshop
 
-import com.rabbitmq.client.ConnectionFactory
+class SendHandler(bookList: scala.collection.mutable.Map[String, BookDetailsClass]) {
 
-class SendHandler(BookList: scala.collection.mutable.Map[String, BookDetailsClass]) {
+  val controllers = new Controllers(bookList)
+  val sender = new Sender()
 
-  var Controllers = new Controllers(BookList)
-
-  val QUEUE_NAME: String = "Server2Client"
-  val factory = new ConnectionFactory()
-  factory.setHost("localhost")
-  val connection = factory.newConnection()
-  val channel = connection.createChannel()
-  channel.queueDeclare(QUEUE_NAME, false, false, false, null)
-  var message: String = ""
-
-  def Allbooks() {
-    var BookSet: Set[String] = Controllers.GetAllBooks();
-    BookSet.foreach(book => message = book + " | " + message)
-    MessageSender()
+  def allBooks() {
+    val bookSet: Set[String] = controllers.getAllBooks()
+    sender.messageSender(bookSet.mkString(" | "))
   }
 
-  def BookDetails(BookName: String): Unit = {
+  def bookDetails(BookName: String): Unit = {
     try {
-      var BookDetails: List[Any] = Controllers.GetBookDetail(BookName);
-      message = f"BookName: ${BookDetails.head} | Author: ${BookDetails(1)} | Price: ${BookDetails(2)}"
+      val bookDetails: List[Any] = controllers.getBookDetail(BookName)
+      sender.messageSender(f"BookName: ${bookDetails.head} | Author: ${bookDetails(1)} | Price: ${bookDetails(2)}")
     }
     catch {
-      case _: Exception => message = "Cant find the book"
+      case _: Exception => sender.messageSender("Cant find details of this book")
     }
-    MessageSender()
+
   }
 
-  def BookAdd(BookName: String, Author: String, Price: String): Unit = {
+  def bookAdd(BookName: String, Author: String, Price: String): Unit = {
     try {
-      Controllers.AddBook(BookName, Author, Price.toDouble)
-      message = "Successfully Added"
+      controllers.addBook(BookName, Author, Price.toDouble)
+      sender.messageSender("Successfully Added")
     }
     catch {
-      case _: Exception => message = "Error : Cant add book"
+      case _: Exception => sender.messageSender("Error : Cant add this book")
     }
-    MessageSender()
   }
 
-  def BookRemove(BookName: String): Unit = {
+  def bookRemove(BookName: String): Unit = {
     try {
-      Controllers.RemoveBook(BookName);
-      message = "Successfully Removed"
+      controllers.removeBook(BookName)
+      sender.messageSender("Successfully Removed")
     }
     catch {
-      case _: Exception => message = "Cant Remove the book"
+      case _: Exception => sender.messageSender("Cant Remove this book")
     }
-    MessageSender()
-  }
-
-  def MessageSender(): Unit = {
-    channel.basicPublish("", QUEUE_NAME, null, message.getBytes("UTF-8"))
-    println(" [x] Sent '" + message + "'")
-    //channel.close()
-    //connection.close()
   }
 }

@@ -6,7 +6,7 @@ import com.sun.net.httpserver.{HttpExchange, HttpHandler}
 
 class ServiceHandler(BookList: scala.collection.mutable.Map[String, BookDetailsClass]) {
 
-  var Controllers = new Controllers(BookList)
+  val controllers = new Controllers(BookList)
 
   @throws[IOException]
   def writeResponse(t: HttpExchange, response: String): Unit = {
@@ -32,7 +32,7 @@ class ServiceHandler(BookList: scala.collection.mutable.Map[String, BookDetailsC
     @throws[IOException]
     def handle(t: HttpExchange): Unit = {
       var BookString: String = ""
-      Controllers.GetAllBooks().foreach(i => BookString = i + "<br/>" + BookString)
+      controllers.getAllBooks().foreach(i => BookString = i + "<br/>" + BookString)
       val response = new StringBuilder
       response.append("<html><body>")
       response.append(BookString)
@@ -48,7 +48,7 @@ class ServiceHandler(BookList: scala.collection.mutable.Map[String, BookDetailsC
       val response = new StringBuilder
       val parms = queryToMap(t.getRequestURI.getQuery)
       try {
-        Controllers.RemoveBook(parms.get("bookname"))
+        controllers.removeBook(parms.get("bookname"))
         response.append("<html><body>")
         response.append("<font color=\"Green\">Successfully removed </font>".format() + parms.get("bookname"))
         response.append("</body></html>")
@@ -68,7 +68,7 @@ class ServiceHandler(BookList: scala.collection.mutable.Map[String, BookDetailsC
       val response = new StringBuilder
       val parms = queryToMap(t.getRequestURI.getQuery)
       try {
-        val list: List[Any] = Controllers.GetBookDetail(parms.get("bookname"))
+        val list: List[Any] = controllers.getBookDetail(parms.get("bookname"))
         response.append("<html><body>")
         response.append("Bookname : " + list.head + "<br/>")
         response.append("Writer : " + list(1) + "<br/>")
@@ -90,7 +90,7 @@ class ServiceHandler(BookList: scala.collection.mutable.Map[String, BookDetailsC
       val response = new StringBuilder
       val parms = queryToMap(t.getRequestURI.getQuery)
       try {
-        Controllers.AddBook(parms.get("bookname"), parms.get("writer"), parms.get("price").toDouble)
+        controllers.addBook(parms.get("bookname"), parms.get("writer"), parms.get("price").toDouble)
         response.append("<html><body>")
         response.append("Bookname : " + parms.get("bookname") + "<br/>")
         response.append("Writer : " + parms.get("writer") + "<br/>")
