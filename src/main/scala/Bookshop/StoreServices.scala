@@ -16,7 +16,9 @@ object StoreServices {
       "Lliad" -> BookDetailsClass("Homer", 95.5),
       "Thor" -> BookDetailsClass("Wayne Smith", 20))
 
-    new Receiver(bookList)
+    val connectionClass = new ConnectionClass()
+    val sender = new Sender(connectionClass)
+    new Receiver(bookList, connectionClass, sender)
 
     val server = HttpServer.create(new InetSocketAddress(8001), 0)
     val handler = new ServiceHandler(bookList)

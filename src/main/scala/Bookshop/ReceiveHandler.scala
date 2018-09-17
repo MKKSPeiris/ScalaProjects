@@ -1,8 +1,8 @@
 package Bookshop
 
-class ReceiveHandler(bookList: scala.collection.mutable.Map[String, BookDetailsClass], message: String) {
+class ReceiveHandler(bookList: scala.collection.mutable.Map[String, BookDetailsClass], message: String,sender: Sender) {
 
-  val sendHandler = new SendHandler(bookList)
+  val sendHandler = new SendHandler(bookList,sender)
   if (message == "AllBooks") {
     println(" [x] Received '" + message + "'")
     sendHandler.allBooks()

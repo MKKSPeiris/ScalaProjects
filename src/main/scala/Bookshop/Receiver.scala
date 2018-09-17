@@ -2,23 +2,20 @@ package Bookshop
 
 import com.rabbitmq.client._
 
-class Receiver(BookList: scala.collection.mutable.Map[String, BookDetailsClass]) {
+class Receiver(BookList: scala.collection.mutable.Map[String, BookDetailsClass], connectionClass: ConnectionClass, sender: Sender) {
 
-  val factory = new ConnectionFactory()
-  factory.setHost("localhost")
-  val connection: Connection = factory.newConnection()
-  val channel: Channel = connection.createChannel()
+
   val QUEUE_NAME: String = "Client2Server"
-  channel.queueDeclare(QUEUE_NAME, false, false, false, null)
-  val consumer: DefaultConsumer = new DefaultConsumer(channel) {
+  connectionClass.channel.queueDeclare(QUEUE_NAME, false, false, false, null)
+  val consumer: DefaultConsumer = new DefaultConsumer(connectionClass.channel) {
 
     override def handleDelivery(consumerTag: String,
                                 envelope: Envelope,
                                 properties: AMQP.BasicProperties,
                                 body: Array[Byte]) {
 
-      new ReceiveHandler(BookList, new String(body, "UTF-8"))
+      new ReceiveHandler(BookList, new String(body, "UTF-8"), sender)
     }
   }
-  channel.basicConsume(QUEUE_NAME, true, consumer)
+  connectionClass.channel.basicConsume(QUEUE_NAME, true, consumer)
 }

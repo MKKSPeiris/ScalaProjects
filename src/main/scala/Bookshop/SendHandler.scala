@@ -1,9 +1,8 @@
 package Bookshop
 
-class SendHandler(bookList: scala.collection.mutable.Map[String, BookDetailsClass]) {
+class SendHandler(bookList: scala.collection.mutable.Map[String, BookDetailsClass], sender: Sender) {
 
   val controllers = new Controllers(bookList)
-  val sender = new Sender()
 
   def allBooks() {
     val bookSet: Set[String] = controllers.getAllBooks()
