@@ -5,7 +5,7 @@ class SendHandler(bookList: scala.collection.mutable.Map[String, BookDetailsClas
   val controllers = new Controllers(bookList)
 
   def allBooks() {
-    val bookSet: Set[String] = controllers.getAllBooks()
+    val bookSet: Set[String] = controllers.getAllBooks
     sender.messageSender(bookSet.mkString(" | "))
   }
 

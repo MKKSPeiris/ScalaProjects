@@ -24,7 +24,7 @@ class Controllers(bookList: scala.collection.mutable.Map[String, BookDetailsClas
     list
   }
 
-  def getAllBooks(): Set[String] = {
+  def getAllBooks: Set[String] = {
     val bookSet: Set[String] = bookList.keys.toSet
     bookSet
   }
